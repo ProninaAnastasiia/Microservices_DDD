@@ -1,0 +1,15 @@
+@base_address = http://localhost:5200
+GET {{base_address}}/api/users
+###
+POST {{base_address}}/api/users
+Content-Type: application/json
+
+{
+  "passportNumber": "963890914",
+  "surename": "Petrov",
+  "name": "Maks",
+  "dateOfBirth": "1978-05-15T00:00:00Z",
+  "dateOfPassportExpiry": "2025-02-10T00:00:00Z"      
+}
+###
+GET {{base_address}}/api/users/963890914
