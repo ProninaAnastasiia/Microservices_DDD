@@ -1,4 +1,5 @@
 using DddService.Aggregates.Events;
+using DddService.EventBus;
 using MediatR;
 
 namespace DddService.Handlers;
@@ -6,9 +7,11 @@ namespace DddService.Handlers;
 public class UserCreatedDomainEventHandler: INotificationHandler<UserCreatedDomainEvent>
 {
     private readonly ILogger<UserCreatedDomainEventHandler> _logger;
+    private readonly KafkaProducerService _kafkaProducerService;
     
-    public UserCreatedDomainEventHandler(ILogger<UserCreatedDomainEventHandler> logger)
+    public UserCreatedDomainEventHandler(KafkaProducerService kafkaProducerService, ILogger<UserCreatedDomainEventHandler> logger)
     {
+        _kafkaProducerService = kafkaProducerService;
         _logger = logger;
     }
 

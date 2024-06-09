@@ -5,7 +5,7 @@ POST {{base_address}}/api/users
 Content-Type: application/json
 
 {
-  "passportNumber": "963890914",
+  "passportNumber": "963890450",
   "surename": "Petrov",
   "name": "Maks",
   "dateOfBirth": "1978-05-15T00:00:00Z",
@@ -13,3 +13,5 @@ Content-Type: application/json
 }
 ###
 GET {{base_address}}/api/users/963890914
+###
+GET {{base_address}}/api/users/763890932

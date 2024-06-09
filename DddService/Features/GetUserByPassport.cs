@@ -1,6 +1,9 @@
+using System.Text.Json;
 using DddService.Aggregates.Events;
 using DddService.Dto;
+using DddService.EventBus;
 using MediatR;
+using Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DddService.Features;
@@ -15,15 +18,15 @@ public record GetUserByPassport : IRequest<UserDto>
     }
 }
 
-
 public class GetUserByPassportHandler : IRequestHandler<GetUserByPassport, UserDto>
 {
     private readonly UserAggregateDbContext _db;
     private readonly IMediator _mediator;
-
-    public GetUserByPassportHandler(UserAggregateDbContext db, IMediator mediator)
+    private readonly KafkaProducerService _kafkaProducerService;
+    public GetUserByPassportHandler(UserAggregateDbContext db, KafkaProducerService kafkaProducerService, IMediator mediator)
     {
         _db = db;
+        _kafkaProducerService = kafkaProducerService;
         _mediator = mediator;
     }
 
@@ -47,6 +50,10 @@ public class GetUserByPassportHandler : IRequestHandler<GetUserByPassport, UserD
                 user.Ticket.DateOfTicketExpiry);
             _mediator.Publish(@event);
         }
+        var userEnteredMessage = new UserEnteredMessage(user.Id, passport.Surename, passport.Name,passport.PassportNumber, new DateTimeOffset(user.Ticket.DateOfTicketExpiry.ToUniversalTime()).ToUnixTimeSeconds().ToString() , new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString());
+        
+        await _kafkaProducerService.ProduceAsync("UsersEntered", JsonSerializer.Serialize(userEnteredMessage));
+
         return new UserDto(user.Id.Value.ToString(), passport, user.Ticket);
     }
 }

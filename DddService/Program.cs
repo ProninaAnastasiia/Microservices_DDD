@@ -2,6 +2,7 @@ using System.Reflection;
 using DddService.Aggregates;
 using DddService.Common;
 using DddService.Dto;
+using DddService.EventBus;
 using DddService.Features;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,10 @@ builder.Services.AddDbContext<UserAggregateDbContext>(options =>
     options.UseNpgsql("Host=localhost;Port=5432;Database=userAggregate;Username=postgres;Password=12345",
         b => b.MigrationsAssembly("DddService"));
 });
+
+// Add Kafka
+builder.Services.AddSingleton<KafkaProducerService>();
+
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
