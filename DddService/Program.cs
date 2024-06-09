@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
 builder.Services.AddDbContext<UserAggregateDbContext>(options =>
 {
-    options.UseNpgsql("Host=localhost;Port=5432;Database=userAggregate;Username=postgres;Password=12345",
+    options.UseNpgsql("Host=localhost;Port=5434;Database=userAggregate;Username=postgres;Password=postgres;",
         b => b.MigrationsAssembly("DddService"));
 });
 
