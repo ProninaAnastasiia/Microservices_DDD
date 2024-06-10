@@ -1,0 +1,5 @@
+clickhouse-client --query "CREATE TABLE users_entered_queue (Id UUID, Surename String, Name String, PassportNumber String, DateOfTicketExpiry String, timestamp UInt64) ENGINE = Kafka('broker:19092', 'UsersEntered', 'consumer-group-2', 'JSONEachRow');"
+
+clickhouse-client --query "CREATE TABLE daily_visits (day Date, Surename String, Name String, PassportNumber String, total UInt64) ENGINE = SummingMergeTree() ORDER BY (day, Surename, Name, PassportNumber);"
+
+clickhouse-client --query "CREATE MATERIALIZED VIEW consumer TO daily_visits AS SELECT toDate(toDateTime(timestamp)) AS day, Surename, Name, PassportNumber, count() AS total FROM default.users_entered_queue GROUP BY day, Surename, Name, PassportNumber;"

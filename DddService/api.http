@@ -5,15 +5,15 @@ POST {{base_address}}/api/users
 Content-Type: application/json
 
 {
-  "passportNumber": "763890922",
-  "surename": "Ivanov",
-  "name": "Ivan",
-  "dateOfBirth": "1999-07-15T00:00:00Z",
-  "dateOfPassportExpiry": "2024-12-15T00:00:00Z"      
+  "passportNumber": "129265038",
+  "surename": "Klop",
+  "name": "Mat",
+  "dateOfBirth": "1989-04-25T00:00:00Z",
+  "dateOfPassportExpiry": "2024-10-21T00:00:00Z"      
 }
 ###
 GET {{base_address}}/api/users/963890450
 ###
-GET {{base_address}}/api/users/763890922
-###
 GET {{base_address}}/api/users/763890932
+###
+GET {{base_address}}/api/users/129265038
